@@ -92,24 +92,31 @@ type Mutation{
 // The root provides a resolver function for each API endpoint
 
 var root = {
-  restaurant: (arg) => restaurants [arg.di],
+  restaurant: (arg) => restaurants [arg.id],
   restaurants: () => restaurants,
   setrestaurant: ({ input }) => {
     restaurants.push({name: input.name, email: input.email, age: input.age});
-    return restaurants[restaurants.length - 1];
-    // Your code goes here
-  },
-  restaurants: () => {
-    // Your code goes here
-  },
-  setrestaurant: ({ input }) => {
-    // Your code goes here
+    return input;
+  
   },
   deleterestaurant: ({ id }) => {
     // Your code goes here
+    const ok = Boolean(restaurants[id]);
+    let delc = restaurants.splice(id, 1);
+    restaurants = restaurants.filter((item) => item.id !== id);
+    console.log(JSON.stringify(delc));
+    return { ok };
   },
   editrestaurant: ({ id, ...restaurant }) => {
     // Your code goes here
+    if (!restaurants[id]) {
+      throw new Error("No restaurant with id: " + id);
+  }
+  restaurants[id] = {
+      ...restaurants[id],
+      ...restaurant,
+  };
+  return restaurants[id];
   },
 };
 var app = express();
