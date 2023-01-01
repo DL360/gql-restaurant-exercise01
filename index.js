@@ -92,7 +92,11 @@ type Mutation{
 // The root provides a resolver function for each API endpoint
 
 var root = {
-  restaurant: (arg) => {
+  restaurant: (arg) => restaurants [arg.di],
+  restaurants: () => restaurants,
+  setrestaurant: ({ input }) => {
+    restaurants.push({name: input.name, email: input.email, age: input.age});
+    return restaurants[restaurants.length - 1];
     // Your code goes here
   },
   restaurants: () => {
